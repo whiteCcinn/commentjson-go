@@ -1,0 +1,32 @@
+[
+  {
+    "log_name": "abc",
+    "event_name": "ddd",
+    "event_type": "sss",
+    "metadata": {
+      "#account_id": {
+        "field": "dd",
+        "default": "{dd}"
+      },
+      "#time": {
+        "field": "null",
+        "default": ""
+      }
+    }
+  },
+  {
+    "log_name": "null",
+    "event_name": "null",
+    "event_type": "null",
+    "metadata": {
+      "#account_id": {
+        "field": "null",
+        "default": "{null}"
+      },
+      "#time": {
+        "field": "null",
+        "default": ""
+      }
+    }
+  }
+]
