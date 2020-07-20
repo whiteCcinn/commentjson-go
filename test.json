@@ -1,6 +1,7 @@
 [
   {
-    "log_name": "abc",
+    ## 这是注释
+    "log_name": "abc", ## 这也是注释
     "event_name": "ddd",
     "event_type": "sss",
     "metadata": {
@@ -13,7 +14,7 @@
         "default": ""
       }
     }
-  },
+  },## 这里注释
   {
     "log_name": "null",
     "event_name": "null",
