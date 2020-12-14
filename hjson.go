@@ -74,7 +74,7 @@ func ToJSON(raw []byte) []byte {
 
 	for i < len(s) {
 		switch s[i] {
-		case ' ', '\n', '\t', '\r':c
+		case ' ', '\n', '\t', '\r':
 			i++
 		case ':':
 			// next value does not need an auto-comma
