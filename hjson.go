@@ -48,10 +48,23 @@ func ToJSON(raw []byte) []byte {
 	for i < len(s) {
 		if isWhitespace(s[i]) {
 			i++
-		} else if s[i] == '{' {
+		} else if s[i] == '{' || s[i] == '[' {
 			break
-		} else if s[i] == '[' {
-			break
+		} else if s[i] == '/' && s[i+1] == '/' {
+			for i < len(s) {
+				i++
+				if s[i] == '\n' {
+					break
+				}
+			}
+		} else if s[i] == '/' && s[i+1] == '*' {
+			for i < len(s) {
+				i++
+				if s[i] == '*' && s[i+1] == '/' {
+					i = i + 2
+					break
+				}
+			}
 		} else {
 			out.WriteByte('{')
 			needEnding = append(needEnding, '}')
@@ -61,7 +74,7 @@ func ToJSON(raw []byte) []byte {
 
 	for i < len(s) {
 		switch s[i] {
-		case ' ', '\n', '\t', '\r':
+		case ' ', '\n', '\t', '\r':c
 			i++
 		case ':':
 			// next value does not need an auto-comma
@@ -151,7 +164,6 @@ func ToJSON(raw []byte) []byte {
 	for _, v := range needEnding {
 		out.WriteByte(v)
 	}
-
 
 	return out.Bytes()
 }

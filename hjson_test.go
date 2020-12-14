@@ -107,7 +107,7 @@ foo: /Users/nickg
 `,
 			want: `{"foo":"/Users/nickg"}`,
 		},
-		{
+		{ // 19
 			orig: `
 [
     "tbllog_event",
@@ -122,7 +122,28 @@ foo: /Users/nickg
 `,
 			want: `["tbllog_event","tbllog_login","tbllog_online","tbllog_pay","tbllog_player","tbllog_quit","tbllog_role","t_log_test_1"]`,
 		},
+		{ // 20
+			orig: `
+ // test
+{
+    "8"      : "uiaVtWPYBlofk" 
+} 
+`,
+			want: `{"8":"uiaVtWPYBlofk"}`,
+		},
+		{ // 21
+			orig: `
+ // app_id 规则
+// 内部 1000-2000
+// 外部 2299-3000
+{
+    "8"      : "uiaVtWPYBlofk" 
+} 
+`,
+			want: `{"8":"uiaVtWPYBlofk"}`,
+		},
 	}
+
 
 	for num, tt := range cases {
 		got := commentjson_go.ToJSON([]byte(tt.orig))
