@@ -142,8 +142,41 @@ foo: /Users/nickg
 `,
 			want: `{"8":"uiaVtWPYBlofk"}`,
 		},
+		{ // 22
+			orig: `
+/*
+`,
+			want: ``,
+		},
+		{ // 23
+			orig: `
+/**
+`,
+			want: ``,
+		},
+		{ // 24
+			orig: `
+/*/
+`,
+			want: ``,
+		},
+		{ // 25
+			orig: `
+// app_id 规则
+// 内部：1-10000
+// 外部：100001-199999
+{
+        // 这里是注释
+    "8"      : "uiaVtWPYBlofk" // 这里是注释
+   /* 测试 */,
+	"9": "uiaVtWPYBlofk" /*继续测试*/,
+    "10": /*测试*/"uiaVtWPYBlofk"
+//
+} 
+`,
+			want: `{"8":"uiaVtWPYBlofk","9":"uiaVtWPYBlofk","10":"uiaVtWPYBlofk"}`,
+		},
 	}
-
 
 	for num, tt := range cases {
 		got := commentjson_go.ToJSON([]byte(tt.orig))

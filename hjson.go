@@ -50,17 +50,17 @@ func ToJSON(raw []byte) []byte {
 			i++
 		} else if s[i] == '{' || s[i] == '[' {
 			break
-		} else if s[i] == '/' && s[i+1] == '/' {
+		} else if s[i] == '#' || (s[i] == '/' && (i+1 < len(s) && s[i+1] == '/')) {
 			for i < len(s) {
 				i++
 				if s[i] == '\n' {
 					break
 				}
 			}
-		} else if s[i] == '/' && s[i+1] == '*' {
-			for i < len(s) {
+		} else if s[i] == '/' && (i+1 < len(s) && s[i+1] == '*') {
+			for i < len(s)-1 {
 				i++
-				if s[i] == '*' && s[i+1] == '/' {
+				if s[i] == '*' && (i+1 < len(s) && s[i+1] == '/') {
 					i = i + 2
 					break
 				}
@@ -71,6 +71,8 @@ func ToJSON(raw []byte) []byte {
 			break
 		}
 	}
+
+	//fmt.Printf("%s\n---%d----\n%s\n\n======\nlast:%s\n=======\n", raw, i, out, s[i:])
 
 	for i < len(s) {
 		switch s[i] {
@@ -103,18 +105,18 @@ func ToJSON(raw []byte) []byte {
 			i++
 		case '/':
 			if i+1 < len(s) && s[i+1] == '/' {
-				idx := bytes.IndexByte(s[2:], '\n')
+				idx := bytes.IndexByte(s[i:], '\n')
+				if idx == -1 {
+					i = len(s)
+				} else {
+					i += idx
+				}
+			} else if i+1 < len(s) && s[i+1] == '*' {
+				idx := bytes.Index(s[i:], []byte("*/"))
 				if idx == -1 {
 					i = len(s)
 				} else {
 					i += idx + 2
-				}
-			} else if i+1 < len(s) && s[i+1] == '*' {
-				idx := bytes.Index(s[2:], []byte("*/"))
-				if idx == -1 {
-					i = len(s)
-				} else {
-					i += idx + 4
 				}
 			} else {
 				// bare word
